@@ -95,6 +95,7 @@ public class Utils {
     }
 
     public static boolean isCompatible(UpdateBaseInfo update) {
+        Log.d(TAG, "update info: timestamp:" + update.getTimestamp());
         if (update.getTimestamp() < SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0)) {
             Log.d(TAG, update.getName() + " is older than current build");
             return false;
@@ -153,7 +154,7 @@ public class Utils {
         String device = SystemProperties.get(Constants.PROP_NEXT_DEVICE,
                 SystemProperties.get(Constants.PROP_DEVICE));
         String type = SystemProperties.get(Constants.PROP_RELEASE_TYPE).toLowerCase(Locale.ROOT);
-        return serverUrl + "/v1/" + device + "/" + type + "/" + incrementalVersion;
+        return serverUrl + "/api/v1/build/" + device + "/" + type + "/" + incrementalVersion;
     }
 
     public static void triggerUpdate(Context context, String downloadId) {
