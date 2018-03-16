@@ -2,3 +2,5 @@
 -keep interface android.support.design.widget.** { *; }
 
 -keep class org.fmo.updater.ui.FlingBehavior { *; }
+
+-dontwarn android.support.**
