@@ -168,9 +168,7 @@ public class UpdaterService extends Service {
                 // The service is being restarted.
                 ABUpdateInstaller installer = ABUpdateInstaller.getInstance(this,
                         mUpdaterController);
-                if (installer.reconnect()) {
-                    return START_STICKY;
-                }
+                installer.reconnect();
             }
         } else if (ACTION_DOWNLOAD_CONTROL.equals(intent.getAction())) {
             String downloadId = intent.getStringExtra(EXTRA_DOWNLOAD_ID);
@@ -192,9 +190,7 @@ public class UpdaterService extends Service {
                 if (Utils.isABUpdate(update.getFile())) {
                     ABUpdateInstaller installer = ABUpdateInstaller.getInstance(this,
                             mUpdaterController);
-                    if (installer.install(downloadId)) {
-                        return START_STICKY;
-                    }
+                    installer.install(downloadId);
                 } else {
                     UpdateInstaller installer = new UpdateInstaller(this, mUpdaterController);
                     installer.install(downloadId);
@@ -216,7 +212,7 @@ public class UpdaterService extends Service {
                 installer.cancel();
             }
         }
-        return START_NOT_STICKY;
+        return ABUpdateInstaller.isInstallingUpdate(this) ? START_STICKY : START_NOT_STICKY;
     }
 
     public Controller getUpdaterController() {
