@@ -96,7 +96,7 @@ public class Utils {
 
     public static boolean isCompatible(UpdateBaseInfo update) {
         Log.d(TAG, "update info: timestamp:" + update.getTimestamp());
-        if (update.getTimestamp() < SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0)) {
+        if (update.getTimestamp() <= SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0)) {
             Log.d(TAG, update.getName() + " is older than current build");
             return false;
         }
@@ -108,7 +108,7 @@ public class Utils {
     }
 
     public static boolean canInstall(UpdateBaseInfo update) {
-        return update.getTimestamp() >= SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0) &&
+        return update.getTimestamp() > SystemProperties.getLong(Constants.PROP_BUILD_DATE, 0) &&
                 update.getVersion().equalsIgnoreCase(
                         SystemProperties.get(Constants.PROP_BUILD_VERSION));
     }
