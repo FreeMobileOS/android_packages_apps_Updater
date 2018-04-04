@@ -16,11 +16,9 @@
  */
 package org.fmo.updater;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -43,6 +41,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -71,6 +72,9 @@ public class UpdatesActivity extends UpdatesListActivity {
     private BroadcastReceiver mBroadcastReceiver;
 
     private UpdatesListAdapter mAdapter;
+
+    private View mRefreshIconView;
+    private RotateAnimation mRefreshAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,11 @@ public class UpdatesActivity extends UpdatesListActivity {
             // This can't be collapsed without a touchscreen
             appBar.setExpanded(false);
         }
+
+        mRefreshAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        mRefreshAnimation.setInterpolator(new LinearInterpolator());
+        mRefreshAnimation.setDuration(1000);
     }
 
     @Override
@@ -354,12 +363,6 @@ public class UpdatesActivity extends UpdatesListActivity {
         String url = Utils.getServerURL(this);
         Log.d(TAG, "Checking " + url);
 
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle(R.string.app_name);
-        progressDialog.setMessage(getString(R.string.dialog_checking_for_updates));
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-
         DownloadClient.DownloadCallback callback = new DownloadClient.DownloadCallback() {
             @Override
             public void onFailure(final boolean cancelled) {
@@ -367,10 +370,10 @@ public class UpdatesActivity extends UpdatesListActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressDialog.dismiss();
                         if (!cancelled) {
                             showSnackbar(R.string.snack_updates_check_failed, Snackbar.LENGTH_LONG);
                         }
+                        refreshAnimationStop();
                     }
                 });
             }
@@ -387,7 +390,7 @@ public class UpdatesActivity extends UpdatesListActivity {
                     public void run() {
                         Log.d(TAG, "List downloaded");
                         processNewJson(jsonFile, jsonFileTmp, manualRefresh);
-                        progressDialog.dismiss();
+                        refreshAnimationStop();
                     }
                 });
             }
@@ -406,14 +409,7 @@ public class UpdatesActivity extends UpdatesListActivity {
             return;
         }
 
-        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressDialog.dismiss();
-                downloadClient.cancel();
-            }
-        });
-        progressDialog.show();
+        refreshAnimationStart();
         downloadClient.start();
     }
 
@@ -446,5 +442,23 @@ public class UpdatesActivity extends UpdatesListActivity {
     @Override
     public void showSnackbar(int stringId, int duration) {
         Snackbar.make(findViewById(R.id.main_container), stringId, duration).show();
+    }
+
+    private void refreshAnimationStart() {
+        if (mRefreshIconView == null) {
+            mRefreshIconView = findViewById(R.id.menu_refresh);
+        }
+        if (mRefreshIconView != null) {
+            mRefreshAnimation.setRepeatCount(Animation.INFINITE);
+            mRefreshIconView.startAnimation(mRefreshAnimation);
+            mRefreshIconView.setEnabled(false);
+        }
+    }
+
+    private void refreshAnimationStop() {
+        if (mRefreshIconView != null) {
+            mRefreshAnimation.setRepeatCount(0);
+            mRefreshIconView.setEnabled(true);
+        }
     }
 }
