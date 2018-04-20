@@ -65,6 +65,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class UpdatesActivity extends UpdatesListActivity {
 
@@ -318,7 +319,7 @@ public class UpdatesActivity extends UpdatesListActivity {
 
     private void downloadUpdatesList(final boolean manualRefresh) {
         final File jsonFile = Utils.getCachedUpdateList(this);
-        final File jsonFileTmp = new File(jsonFile.getAbsolutePath() + ".tmp");
+        final File jsonFileTmp = new File(jsonFile.getAbsolutePath() + UUID.randomUUID());
         String url = Utils.getServerURL(this);
         Log.d(TAG, "Checking " + url);
 
