@@ -198,7 +198,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
-        if (mUpdaterController == null) {
+        if (mDownloadIds == null) {
             viewHolder.mAction.setEnabled(false);
             return;
         }
@@ -254,10 +254,16 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
     }
 
     public void notifyItemChanged(String downloadId) {
+        if (mDownloadIds == null) {
+            return;
+        }
         notifyItemChanged(mDownloadIds.indexOf(downloadId));
     }
 
     public void removeItem(String downloadId) {
+        if (mDownloadIds == null) {
+            return;
+        }
         int position = mDownloadIds.indexOf(downloadId);
         mDownloadIds.remove(downloadId);
         notifyItemRemoved(position);
