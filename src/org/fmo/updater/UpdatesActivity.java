@@ -56,7 +56,6 @@ import org.fmo.updater.controller.UpdaterService;
 import org.fmo.updater.download.DownloadClient;
 import org.fmo.updater.misc.BuildInfoUtils;
 import org.fmo.updater.misc.Constants;
-import org.fmo.updater.misc.LegacySupport;
 import org.fmo.updater.misc.StringGenerator;
 import org.fmo.updater.misc.Utils;
 import org.fmo.updater.model.UpdateInfo;
@@ -244,20 +243,11 @@ public class UpdatesActivity extends UpdatesListActivity {
         boolean newUpdates = false;
 
         List<UpdateInfo> updates = Utils.parseJson(jsonFile, true);
-
-        List<String> importedNotAvailableOnline = LegacySupport.importDownloads(this, updates);
-
         List<String> updatesOnline = new ArrayList<>();
         for (UpdateInfo update : updates) {
             newUpdates |= controller.addUpdate(update);
             updatesOnline.add(update.getDownloadId());
         }
-
-        if (importedNotAvailableOnline != null) {
-            updatesOnline.removeAll(importedNotAvailableOnline);
-            controller.setUpdatesNotAvailableOnline(importedNotAvailableOnline);
-        }
-
         controller.setUpdatesAvailableOnline(updatesOnline, true);
 
         if (manualRefresh) {
