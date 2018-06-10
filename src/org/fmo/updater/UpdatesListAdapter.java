@@ -75,6 +75,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         INFO,
         DELETE,
         CANCEL_INSTALLATION,
+        REBOOT,
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -155,6 +156,11 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
             setButtonAction(viewHolder.mAction, Action.INSTALL, downloadId, false);
             viewHolder.mProgressText.setText(R.string.list_verifying_update);
             viewHolder.mProgressBar.setIndeterminate(true);
+        } else if (mUpdaterController.isWaitingForReboot(downloadId)) {
+            setButtonAction(viewHolder.mAction, Action.REBOOT, downloadId, false);
+            viewHolder.mProgressText.setText(R.string.installing_update_finished);
+            viewHolder.mProgressBar.setIndeterminate(false);
+            viewHolder.mProgressBar.setProgress(100);
         } else {
             canDelete = true;
             setButtonAction(viewHolder.mAction, Action.RESUME, downloadId, !isBusy());
@@ -361,6 +367,13 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                 button.setText(R.string.action_cancel);
                 button.setEnabled(enabled);
                 clickListener = enabled ? view -> getCancelInstallationDialog().show() : null;
+            }
+            break;
+            case REBOOT: {
+                button.setText(R.string.reboot);
+                button.setEnabled(enabled);
+                clickListener = enabled ?
+                        view -> mActivity.sendBroadcast(new Intent(Intent.ACTION_REBOOT)) : null;
             }
             break;
             default:
