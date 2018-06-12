@@ -41,7 +41,6 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.fmo.updater.controller.Controller;
 import org.fmo.updater.controller.UpdaterService;
 import org.fmo.updater.misc.BuildInfoUtils;
 import org.fmo.updater.misc.Constants;
@@ -65,7 +64,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
     private List<String> mDownloadIds;
     private String mSelectedDownload;
-    private Controller mUpdaterController;
+    private UpdaterController mUpdaterController;
     private UpdatesListActivity mActivity;
 
     private enum Action {
@@ -114,7 +113,7 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
         return new ViewHolder(view);
     }
 
-    public void setUpdaterController(Controller updaterController) {
+    public void setUpdaterController(UpdaterController updaterController) {
         mUpdaterController = updaterController;
         notifyDataSetChanged();
     }

@@ -50,7 +50,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import org.json.JSONException;
-import org.fmo.updater.controller.Controller;
 import org.fmo.updater.controller.UpdaterController;
 import org.fmo.updater.controller.UpdaterService;
 import org.fmo.updater.download.DownloadClient;
@@ -60,7 +59,6 @@ import org.fmo.updater.misc.StringGenerator;
 import org.fmo.updater.misc.Utils;
 import org.fmo.updater.model.UpdateInfo;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -239,7 +237,7 @@ public class UpdatesActivity extends UpdatesListActivity {
     private void loadUpdatesList(File jsonFile, boolean manualRefresh)
             throws IOException, JSONException {
         Log.d(TAG, "Adding remote updates");
-        Controller controller = mUpdaterService.getUpdaterController();
+        UpdaterController controller = mUpdaterService.getUpdaterController();
         boolean newUpdates = false;
 
         List<UpdateInfo> updates = Utils.parseJson(jsonFile, true);
