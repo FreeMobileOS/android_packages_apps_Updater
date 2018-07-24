@@ -16,11 +16,13 @@
  */
 package org.fmo.updater;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.BatteryManager;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -375,8 +377,11 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
             case REBOOT: {
                 button.setText(R.string.reboot);
                 button.setEnabled(enabled);
-                clickListener = enabled ?
-                        view -> mActivity.sendBroadcast(new Intent(Intent.ACTION_REBOOT)) : null;
+                clickListener = enabled ? view -> {
+                    PowerManager pm =
+                            (PowerManager) mActivity.getSystemService(Context.POWER_SERVICE);
+                    pm.reboot(null);
+                } : null;
             }
             break;
             default:
