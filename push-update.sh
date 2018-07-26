@@ -51,3 +51,6 @@ adb shell "killall org.fmo.updater 2>/dev/null"
 adb shell "sqlite3 /data/data/org.fmo.updater/databases/updates.db" \
     "\"INSERT INTO updates (status, path, download_id, timestamp, type, version, size)" \
     "  VALUES ($status, '$zip_path_device', '$id', $timestamp, '$type', '$version', $size)\""
+
+# Exit root mode
+adb unroot
