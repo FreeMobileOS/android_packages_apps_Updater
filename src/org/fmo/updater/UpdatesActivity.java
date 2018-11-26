@@ -59,6 +59,7 @@ import org.fmo.updater.misc.StringGenerator;
 import org.fmo.updater.misc.Utils;
 import org.fmo.updater.model.UpdateInfo;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

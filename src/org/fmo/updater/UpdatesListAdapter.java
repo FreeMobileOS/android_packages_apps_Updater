@@ -46,6 +46,7 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.fmo.updater.controller.UpdaterController;
 import org.fmo.updater.controller.UpdaterService;
 import org.fmo.updater.misc.BuildInfoUtils;
 import org.fmo.updater.misc.Constants;

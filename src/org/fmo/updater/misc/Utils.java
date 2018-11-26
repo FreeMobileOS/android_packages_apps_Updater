@@ -146,14 +146,16 @@ public class Utils {
     }
 
     public static String getServerURL(Context context) {
-        String serverUrl = SystemProperties.get(Constants.PROP_UPDATER_URI);
-        if (serverUrl.trim().isEmpty()) {
-            serverUrl = context.getString(R.string.conf_update_server_url_def);
-        }
         String incrementalVersion = SystemProperties.get(Constants.PROP_BUILD_VERSION_INCREMENTAL);
         String device = SystemProperties.get(Constants.PROP_NEXT_DEVICE,
                 SystemProperties.get(Constants.PROP_DEVICE));
         String type = SystemProperties.get(Constants.PROP_RELEASE_TYPE).toLowerCase(Locale.ROOT);
+
+        String serverUrl = SystemProperties.get(Constants.PROP_UPDATER_URI);
+        if (serverUrl.trim().isEmpty()) {
+            serverUrl = context.getString(R.string.updater_server_url);
+        }
+
         return serverUrl + "/api/v1/build/" + device + "/" + type + "/" + incrementalVersion;
     }
 
