@@ -6,7 +6,7 @@ if [ ! -f "$1" ]; then
    echo "Usage: $0 ZIP [UNVERIFIED]"
    echo "Push ZIP to $updates_dir and add it to Updater"
    echo
-   echo "The name of ZIP is assumed to have lineage-VERSION-DATE-TYPE-* as format"
+   echo "The name of ZIP is assumed to have fmo-VERSION-DATE-TYPE-* as format"
    echo "If UNVERIFIED is set, the app will verify the update"
    exit
 fi
