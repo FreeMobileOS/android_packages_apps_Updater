@@ -28,4 +28,6 @@ public interface UpdateBaseInfo {
     String getVersion();
 
     String getDownloadUrl();
+
+    String getChangeLogUrl();
 }

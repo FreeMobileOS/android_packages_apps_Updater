@@ -45,6 +45,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.webkit.WebView;
+import android.widget.ImageButton;
 
 import org.fmo.updater.controller.UpdaterController;
 import org.fmo.updater.controller.UpdaterService;
@@ -92,6 +94,8 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
         private ProgressBar mProgressBar;
         private TextView mProgressText;
+	private ImageButton mInfoButton;
+
 
         public ViewHolder(final View view) {
             super(view);
@@ -102,6 +106,9 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
             mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
             mProgressText = (TextView) view.findViewById(R.id.progress_text);
+
+
+	    mInfoButton = (ImageButton) view.findViewById(R.id.update_info);
         }
     }
 
@@ -126,6 +133,10 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
     }
 
     private void handleActiveStatus(ViewHolder viewHolder, UpdateInfo update) {
+	String changeLogUrl = update.getChangeLogUrl();
+
+        viewHolder.mInfoButton.setOnClickListener(getClickListener(changeLogUrl));
+
         boolean canDelete = false;
 
         final String downloadId = update.getDownloadId();
@@ -184,6 +195,10 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
 
     private void handleNotActiveStatus(ViewHolder viewHolder, UpdateInfo update) {
         final String downloadId = update.getDownloadId();
+
+	String changeLogUrl = update.getChangeLogUrl();
+	viewHolder.mInfoButton.setOnClickListener(getClickListener(changeLogUrl));
+
         if (mUpdaterController.isWaitingForReboot(downloadId)) {
             viewHolder.itemView.setOnLongClickListener(
                     getLongClickListener(update, false, viewHolder.mBuildDate));
@@ -555,5 +570,25 @@ public class UpdatesListAdapter extends RecyclerView.Adapter<UpdatesListAdapter.
                 mActivity.getResources().getInteger(R.integer.battery_ok_percentage_charging) :
                 mActivity.getResources().getInteger(R.integer.battery_ok_percentage_discharging);
         return percent >= required;
+    }
+
+    private View.OnClickListener getClickListener(final String logUrl) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChangeLog(logUrl);
+            }
+        };
+    }
+
+    private void showChangeLog(String changeLogUrl) {
+	 WebView webView = new WebView(mActivity);
+        webView.loadUrl(changeLogUrl);
+
+        // display the WebView in an AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("Changes")
+               .setView(webView)
+               .show();
     }
 }

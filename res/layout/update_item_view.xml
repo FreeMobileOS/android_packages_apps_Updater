@@ -77,7 +77,20 @@
                     tools:text="300 MB"
                     tools:visibility="invisible" />
             </RelativeLayout>
-        </LinearLayout>
+     	</LinearLayout>
+
+	<RelativeLayout
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/update_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_info" />
+	</RelativeLayout>
 
         <Button
             android:id="@id/update_action"

@@ -24,6 +24,7 @@ public class UpdateBase implements UpdateBaseInfo {
     private long mTimestamp;
     private String mType;
     private String mVersion;
+    private String mChangeLogUrl;
 
     public UpdateBase() {
     }
@@ -35,6 +36,7 @@ public class UpdateBase implements UpdateBaseInfo {
         mTimestamp = update.getTimestamp();
         mType = update.getType();
         mVersion = update.getVersion();
+	mChangeLogUrl = update.getChangeLogUrl();
     }
 
     @Override
@@ -89,5 +91,14 @@ public class UpdateBase implements UpdateBaseInfo {
 
     public void setDownloadUrl(String downloadUrl) {
         mDownloadUrl = downloadUrl;
+    }
+
+    @Override
+    public String getChangeLogUrl() {
+	    return mChangeLogUrl;
+    }
+
+    public void setChangeLogUrl(String changeLogUrl) {
+	    mChangeLogUrl = changeLogUrl;
     }
 }
