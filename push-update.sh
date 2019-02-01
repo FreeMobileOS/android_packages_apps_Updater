@@ -1,6 +1,6 @@
 #!/bin/sh
 
-updates_dir=/data/fmo_updates
+updates_dir=/data/data/org.fmo.updater
 
 if [ ! -f "$1" ]; then
    echo "Usage: $0 ZIP [UNVERIFIED]"
